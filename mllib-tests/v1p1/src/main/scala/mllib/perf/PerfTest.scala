@@ -1,14 +1,14 @@
 package mllib.perf
 
+import org.apache.spark.Logging
+
 import scala.collection.JavaConverters._
 
 import joptsimple.{OptionSet, OptionParser}
 
 import org.json4s._
 
-import org.apache.spark.Logging
-
-abstract class PerfTest extends Logging {
+abstract class PerfTest extends Logging with SparkProber {
 
   val NUM_TRIALS =          ("num-trials",    "number of trials to run")
   val INTER_TRIAL_WAIT =    ("inter-trial-wait",   "seconds to sleep between trials")
@@ -59,7 +59,7 @@ abstract class PerfTest extends Logging {
    *
    * @return metrics from run (e.g. ("time" -> time)
    *  */
-  def run(): JValue
+  def run(): (JValue, ProberResults)
 
   val parser = new OptionParser()
   var optionSet: OptionSet = _

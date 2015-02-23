@@ -32,18 +32,21 @@ abstract class RegressionAndClassificationTests[M](sc: SparkContext) extends Per
   var rdd: RDD[LabeledPoint] = _
   var testRdd: RDD[LabeledPoint] = _
 
-  override def run(): JValue = {
+  override def run() = {
     var start = System.currentTimeMillis()
     val model = runTest(rdd)
     val trainingTime = (System.currentTimeMillis() - start).toDouble / 1000.0
+
+    val proberLog = proberResults().copy()
 
     start = System.currentTimeMillis()
     val trainingMetric = validate(model, rdd)
     val testTime = (System.currentTimeMillis() - start).toDouble / 1000.0
 
     val testMetric = validate(model, testRdd)
-    Map("trainingTime" -> trainingTime, "testTime" -> testTime,
+    val map = Map("trainingTime" -> trainingTime, "testTime" -> testTime,
       "trainingMetric" -> trainingMetric, "testMetric" -> testMetric)
+    (map, proberLog)
   }
 
   /**
@@ -294,18 +297,21 @@ abstract class RecommendationTests(sc: SparkContext) extends PerfTest {
     math.sqrt(predictionsAndRatings.map(x => (x._1 - x._2) * (x._1 - x._2)).mean())
   }
 
-  override def run(): JValue = {
+  override def run() = {
     var start = System.currentTimeMillis()
     val model = runTest(rdd)
     val trainingTime = (System.currentTimeMillis() - start).toDouble / 1000.0
+
+    val proberLog = proberResults().copy()
 
     start = System.currentTimeMillis()
     val trainingMetric = validate(model, rdd)
     val testTime = (System.currentTimeMillis() - start).toDouble / 1000.0
 
     val testMetric = validate(model, testRdd)
-    Map("trainingTime" -> trainingTime, "testTime" -> testTime,
+    val map = Map("trainingTime" -> trainingTime, "testTime" -> testTime,
       "trainingMetric" -> trainingMetric, "testMetric" -> testMetric)
+    (map, proberLog)
   }
 }
 
@@ -353,18 +359,21 @@ abstract class ClusteringTests(sc: SparkContext) extends PerfTest {
     println("Num Examples: " + rdd.count())
   }
 
-  override def run(): JValue = {
+  override def run() = {
     var start = System.currentTimeMillis()
     val model = runTest(rdd)
     val trainingTime = (System.currentTimeMillis() - start).toDouble / 1000.0
+
+    val proberLog = proberResults().copy()
 
     start = System.currentTimeMillis()
     val trainingMetric = validate(model, rdd)
     val testTime = (System.currentTimeMillis() - start).toDouble / 1000.0
 
     val testMetric = validate(model, testRdd)
-    Map("trainingTime" -> trainingTime, "testTime" -> testTime,
+    val map = Map("trainingTime" -> trainingTime, "testTime" -> testTime,
       "trainingMetric" -> trainingMetric, "testMetric" -> testMetric)
+    (map, proberLog)
   }
 }
 
