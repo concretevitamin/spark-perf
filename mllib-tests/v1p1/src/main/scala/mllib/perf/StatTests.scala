@@ -33,12 +33,12 @@ abstract class StatTests[T](sc: SparkContext) extends PerfTest {
   val options = intOptions ++ stringOptions  ++ booleanOptions ++ doubleOptions ++ longOptions
   addOptionsToParser()
 
-  override def run(): JValue = {
+  override def run() = {
     val start = System.currentTimeMillis()
     runTest(rdd)
     val end = System.currentTimeMillis()
     val time = (end - start).toDouble / 1000.0
-    Map("time" -> time)
+    (Map("time" -> time), proberResults().waitAndCopy(3000))
   }
 }
 

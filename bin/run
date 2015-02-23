@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 export PYTHONPATH="$(dirname "$0")/../lib/:$PYTHONPATH"
-/usr/bin/env python "$(dirname "$0")/../lib/sparkperf/main.py" "$@"
+for sf in 1 2 4 6 8
+do
+  export PERF_SF=$sf
+  /usr/bin/env python "$(dirname "$0")/../lib/sparkperf/main.py" "$@"
+done

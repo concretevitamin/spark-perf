@@ -34,7 +34,7 @@ abstract class LinearAlgebraTests(sc: SparkContext) extends PerfTest {
     rdd = DataGenerator.generateDistributedSquareMatrix(sc, m, n, numPartitions, seed)
   }
 
-  override def run(): JValue = {
+  override def run() = {
     val rank = intOptionValue(RANK)
 
     val start = System.currentTimeMillis()
@@ -42,7 +42,7 @@ abstract class LinearAlgebraTests(sc: SparkContext) extends PerfTest {
     val end = System.currentTimeMillis()
     val time = (end - start).toDouble / 1000.0
 
-    Map("time" -> time)
+    (Map("time" -> time), proberResults().waitAndCopy(3000))
   }
 }
 

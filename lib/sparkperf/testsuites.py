@@ -255,6 +255,18 @@ class MLlibTests(JVMPerfTestSuite, MLlibTestHelper):
         run_cmd("cd %s/mllib-tests; %s clean assembly" % (PROJ_DIR, SBT_CMD))
 
     @classmethod
+    def get_spark_submit_cmd(cls, cluster, config, main_class_or_script, opt_list, stdout_filename,
+                             stderr_filename):
+        """This differs from JVMPerfTestSuite, in that we pass one more arg, the prober log file."""
+        spark_submit = "%s/bin/spark-submit" % cluster.spark_home
+        cmd = "%s --class %s --master %s --driver-memory %s %s %s %s 1>> %s 2>> %s" % (
+            spark_submit, main_class_or_script, config.SPARK_CLUSTER_URL,
+            config.SPARK_DRIVER_MEMORY, cls.test_jar_path, stdout_filename.split(".out")[0] + ".log",
+            " ".join(opt_list),
+            stdout_filename, stderr_filename)
+        return cmd
+
+    @classmethod
     def process_output(cls, config, short_name, opt_list, stdout_filename, stderr_filename):
         return MLlibTestHelper.process_output(config, short_name, opt_list,
                                               stdout_filename, stderr_filename)
