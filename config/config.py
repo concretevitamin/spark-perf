@@ -131,7 +131,7 @@ assert SCALE_FACTOR > 0, "SCALE_FACTOR must be > 0."
 # If set, removes the first N trials for each test from all reported statistics. Useful for
 # tests which have outlier behavior due to JIT and other system cache warm-ups. If any test
 # returns fewer N + 1 results, an exception is thrown.
-IGNORED_TRIALS = 2
+IGNORED_TRIALS = 1
 
 # Command used to launch Scala or Java.
 
@@ -157,7 +157,7 @@ COMMON_OPTS = [
     # How many times to run each experiment - used to warm up system caches.
     # This OptionSet should probably only have a single value (i.e., length 1)
     # since it doesn't make sense to have multiple values here.
-    OptionSet("num-trials", [10]),
+    OptionSet("num-trials", [2]),
     # Extra pause added between trials, in seconds. For runs with large amounts
     # of shuffle data, this gives time for buffer cache write-back.
     OptionSet("inter-trial-wait", [3])
