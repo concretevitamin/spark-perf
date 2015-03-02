@@ -83,9 +83,7 @@ object TestRunner {
         ("results" -> results)
     println("results: " + compact(render(json)))
 
-    Option(proberLog)
-      .map(_.record(" totalStages", test.listener.stageCnt.toString))
-      .foreach(_.printToFile(proberLogFile))
+    Option(proberLog).foreach(_.printToFile(proberLogFile))
 
     sc.stop()
   }

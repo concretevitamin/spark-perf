@@ -41,7 +41,8 @@ abstract class RegressionAndClassificationTests[M](sc: SparkContext) extends Per
     proberLog.record(Map(
       " testName" -> testName,
       " sparkAppName" -> sc.appName,
-      " endToEndTrainingTimeMillis" -> (trainingTime * 1000).toString)
+      " endToEndTrainingTimeMillis" -> (trainingTime * 1000).toString,
+      " totalStages" -> listener.stageCnt.toString)
     )
 
     start = System.currentTimeMillis()
