@@ -38,8 +38,11 @@ abstract class RegressionAndClassificationTests[M](sc: SparkContext) extends Per
     val trainingTime = (System.currentTimeMillis() - start).toDouble / 1000.0
 
     val proberLog = proberResults().copy()
-    proberLog.record(s" endToEndTrainingTimeMillis($trainingTime)",
-      (trainingTime * 1000).toString)
+    proberLog.record(Map(
+      " testName" -> testName,
+      " sparkAppName" -> sc.appName,
+      " endToEndTrainingTimeMillis" -> (trainingTime * 1000).toString)
+    )
 
     start = System.currentTimeMillis()
     val trainingMetric = validate(model, rdd)
