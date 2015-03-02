@@ -13,6 +13,7 @@ class ProbingListener extends SparkListener with Logging {
 
   // Chronological stage count (`stageCnt`)
   var recordAtTaskLevelForStage: Set[Int] = _
+  var recordAtTaskLevelForAllStages: Boolean = false
 
   var stageBeginTime: Long = 0
   var stageEndTime: Long = 0
@@ -52,9 +53,11 @@ class ProbingListener extends SparkListener with Logging {
 
     stageLatestTaskEndTime = math.max(taskEnd.taskInfo.finishTime, stageLatestTaskEndTime)
 
+
     // Record at task level, for convenience onStageCompleted() will record
     // aggregated stats at stage level again.
-    if (recordAtTaskLevelForStage != null && recordAtTaskLevelForStage(stageCnt + 1)) {
+    if (recordAtTaskLevelForAllStages ||
+      Option(recordAtTaskLevelForStage).exists(_.contains(stageCnt + 1))) {
       val stageId = "stage-" + (stageCnt + 1)
       val taskId = "task-" + taskEnd.taskInfo.taskId
       val id = stageId + "-" + taskId

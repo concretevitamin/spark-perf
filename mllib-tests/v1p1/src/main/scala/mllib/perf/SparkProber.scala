@@ -26,6 +26,10 @@ trait SparkProber {
     listener.recordAtTaskLevelForStage = recordAtTaskLevelForStage.toSet
   }
 
+  def recordAtTaskLevel() {
+    listener.recordAtTaskLevelForAllStages = true
+  }
+
 }
 
 class ProberResults(var res: mutable.Map[String, String]) {
@@ -45,7 +49,6 @@ class ProberResults(var res: mutable.Map[String, String]) {
   }
 
   def printToFile(filePath: String, headerMsg: String = "", sortByKey: Boolean = true) = {
-
     def helper(f: java.io.File)(op: java.io.PrintWriter => Unit) {
       val p = new java.io.PrintWriter(f)
       try {

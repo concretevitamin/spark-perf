@@ -61,6 +61,7 @@ object TestRunner {
       if (i == numTrials) {
         Thread.sleep(3000)
         test.beforeProberJob(sc)
+        test.recordAtTaskLevel()
         Thread.sleep(500)
       }
 
@@ -82,7 +83,9 @@ object TestRunner {
         ("results" -> results)
     println("results: " + compact(render(json)))
 
-    Option(proberLog).foreach(_.printToFile(proberLogFile))
+    Option(proberLog)
+      .map(_.record(" totalStages", test.listener.stageCnt.toString))
+      .foreach(_.printToFile(proberLogFile))
 
     sc.stop()
   }
