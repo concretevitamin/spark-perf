@@ -392,7 +392,7 @@ MLLIB_REGRESSION_CLASSIFICATION_TEST_OPTS = MLLIB_COMMON_OPTS + [
     # The number of rows or examples
     OptionSet("num-examples", [1000000], can_scale=True),
     # The number of features per example
-    OptionSet("num-features", [10000], can_scale=True)
+    OptionSet("num-features", [10000], can_scale=False) # intentional...
 ]
 
 # Generalized Linear Model (GLM) Tests #
