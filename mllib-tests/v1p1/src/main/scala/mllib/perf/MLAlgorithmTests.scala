@@ -37,7 +37,7 @@ abstract class RegressionAndClassificationTests[M](sc: SparkContext) extends Per
     val model = runTest(rdd)
     val trainingTime = (System.currentTimeMillis() - start).toDouble / 1000.0
 
-    val proberLog = proberResults().copy()
+    val proberLog = proberResults().waitAndCopy(3000)
     proberLog.record(Map(
       " testName" -> testName,
       " sparkAppName" -> sc.appName,
@@ -308,7 +308,7 @@ abstract class RecommendationTests(sc: SparkContext) extends PerfTest {
     val model = runTest(rdd)
     val trainingTime = (System.currentTimeMillis() - start).toDouble / 1000.0
 
-    val proberLog = proberResults().copy()
+    val proberLog = proberResults().waitAndCopy(3000)
 
     start = System.currentTimeMillis()
     val trainingMetric = validate(model, rdd)
@@ -370,7 +370,7 @@ abstract class ClusteringTests(sc: SparkContext) extends PerfTest {
     val model = runTest(rdd)
     val trainingTime = (System.currentTimeMillis() - start).toDouble / 1000.0
 
-    val proberLog = proberResults().copy()
+    val proberLog = proberResults().waitAndCopy(3000)
 
     start = System.currentTimeMillis()
     val trainingMetric = validate(model, rdd)

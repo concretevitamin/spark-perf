@@ -87,7 +87,12 @@ class ProberResults(var res: mutable.Map[String, String]) {
     ProberResults(res.filter { case (k, v) => k.toLowerCase.matches(".*time") })
   }
 
-  def copy(): ProberResults = ProberResults(res.clone())
+  /** In general, we don't have a way to know if all events from the listener bus (Spark
+    * side) have posted or not.  A workaround is to wait for a few seconds. */
+  def waitAndCopy(sleep: Long): ProberResults = {
+    Thread.sleep(sleep)
+    ProberResults(res.clone())
+  }
 
 }
 

@@ -42,7 +42,7 @@ abstract class LinearAlgebraTests(sc: SparkContext) extends PerfTest {
     val end = System.currentTimeMillis()
     val time = (end - start).toDouble / 1000.0
 
-    (Map("time" -> time), proberResults().copy())
+    (Map("time" -> time), proberResults().waitAndCopy(3000))
   }
 }
 
