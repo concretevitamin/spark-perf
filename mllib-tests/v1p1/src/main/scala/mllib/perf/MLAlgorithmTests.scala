@@ -408,6 +408,9 @@ class NaiveBayesTest(sc: SparkContext)
 
   /** Note: using same data generation as for GLMClassificationTest, but should change later */
   override def createInputData(seed: Long) = {
+    // Unpersist if generated before; useful for freeing memory between trials.
+    Seq(rdd, testRdd).foreach(Option(_).foreach(_.unpersist(blocking = true)))
+
     val numExamples: Long = longOptionValue(NUM_EXAMPLES)
     val numFeatures: Int = intOptionValue(NUM_FEATURES)
     val numPartitions: Int = intOptionValue(NUM_PARTITIONS)
