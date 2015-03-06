@@ -380,7 +380,7 @@ if MLLIB_SPARK_VERSION >= 1.1:
 MLLIB_COMMON_OPTS = COMMON_OPTS + [
     # The number of input partitions.
     # The default setting is suitable for a 16-node m3.2xlarge EC2 cluster.
-    OptionSet("num-partitions", [128], can_scale=True),
+    OptionSet("num-partitions", [int(128 * SCALE_FACTOR)], can_scale=True),
     # A random seed to make tests reproducable.
     OptionSet("random-seed", [5])
 ]

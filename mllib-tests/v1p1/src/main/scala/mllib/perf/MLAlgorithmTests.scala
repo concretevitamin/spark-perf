@@ -380,6 +380,12 @@ abstract class ClusteringTests(sc: SparkContext) extends PerfTest {
     val trainingTime = (System.currentTimeMillis() - start).toDouble / 1000.0
 
     val proberLog = proberResults().waitAndCopy(3000)
+      .record(Map(
+        " testName" -> testName,
+        " sparkAppName" -> sc.appName,
+        " endToEndTrainingTimeMillis" -> (trainingTime * 1000).toString,
+        " totalStages" -> listener.stageCnt.toString)
+      )
 
     start = System.currentTimeMillis()
     val trainingMetric = validate(model, rdd)
