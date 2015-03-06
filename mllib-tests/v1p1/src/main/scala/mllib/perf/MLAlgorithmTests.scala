@@ -38,12 +38,21 @@ abstract class RegressionAndClassificationTests[M](sc: SparkContext) extends Per
     val trainingTime = (System.currentTimeMillis() - start).toDouble / 1000.0
 
     val proberLog = proberResults().waitAndCopy(3000)
-    proberLog.record(Map(
-      " testName" -> testName,
-      " sparkAppName" -> sc.appName,
-      " endToEndTrainingTimeMillis" -> (trainingTime * 1000).toString,
-      " totalStages" -> listener.stageCnt.toString)
-    )
+      .record(Map(
+        " testName" -> testName,
+        " sparkAppName" -> sc.appName,
+        " endToEndTrainingTimeMillis" -> (trainingTime * 1000).toString,
+        " totalStages" -> listener.stageCnt.toString)
+      )
+
+    model match {
+      case nbModel: NaiveBayesModel =>
+        proberLog.record(Map(
+          " length of aggregated == # labels == # unique keys" -> nbModel.pi.length.toString,
+          " # features" -> nbModel.theta(0).length.toString)
+        )
+      case _ =>
+    }
 
     start = System.currentTimeMillis()
     val trainingMetric = validate(model, rdd)
