@@ -124,7 +124,7 @@ PYTHON_MLLIB_OUTPUT_FILENAME = "results/python_mllib_perf_output_%s_%s" % (
 # number of records in a generated dataset) if you are running the tests with more
 # or fewer nodes. When developing new test suites, you might want to set this to a small
 # value suitable for a single machine, such as 0.001.
-SCALE_FACTOR = 0.125
+SCALE_FACTOR = float(os.getenv('PERF_SF', 0.01))
 
 assert SCALE_FACTOR > 0, "SCALE_FACTOR must be > 0."
 
